@@ -6,11 +6,25 @@ namespace SpriteKind {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.scene, function (sprite, otherSprite) {
     info.changeScoreBy(1)
     otherSprite.destroy()
+    if (info.score() == 90) {
+        tiles.setTilemap(tilemap`level3`)
+        story.printCharacterText("I FOUND IT", "Kieran")
+        story.printCharacterText("and he clicked the link")
+        bamboo = sprites.create(assets.image`log8`, SpriteKind.Player)
+        for (let index = 0; index <= 89; index++) {
+            tiles.placeOnRandomTile(bamboo, assets.tile`myTile0`)
+        }
+        story.printCharacterText("Thats a little too much", "Kieran")
+        game.over(true)
+    }
 })
 function game2 () {
+    panda_cutscene.destroy()
     tiles.setTilemap(tilemap`level1`)
     PANDA = sprites.create(assets.image`villager2WalkRight1`, SpriteKind.Player)
     tiles.placeOnRandomTile(PANDA, assets.tile`myTile4`)
+    scene.cameraFollowSprite(PANDA)
+    controller.moveSprite(PANDA)
     for (let index = 0; index <= 9; index++) {
         EMAILSPAM = sprites.create(assets.image`sharkAttack4`, SpriteKind.scene)
         emailpaypal = sprites.create(assets.image`sharkAttack5`, SpriteKind.scene)
@@ -21,15 +35,15 @@ function game2 () {
         pink = sprites.create(assets.image`sharkAttack8`, SpriteKind.scene)
         purp = sprites.create(assets.image`sharkAttack1`, SpriteKind.scene)
         orane = sprites.create(assets.image`sharkAttack3`, SpriteKind.scene)
-        tiles.placeOnRandomTile(purp, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(pink, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(orane, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(emailpaypal, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(EMAILSPAM, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(emailreen, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(brown, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(emailpaypal, assets.tile`myTile0`)
-        tiles.placeOnRandomTile(emailyellow, assets.tile`myTile0`)
+        tiles.placeOnRandomTile(purp, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(pink, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(orane, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(emailpaypal, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(EMAILSPAM, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(emailreen, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(brown, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(emailpaypal, assets.tile`myTile1`)
+        tiles.placeOnRandomTile(emailyellow, assets.tile`myTile1`)
     }
 }
 function START_SCENE () {
@@ -44,13 +58,19 @@ function START_SCENE () {
     story.printCharacterText("So he went and looked for the email.")
     story.printCharacterText("But his phone glitched and created a maze of emails.")
     story.printCharacterText("luckily it narrowed it down to 90 emails")
+    game2()
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (start_A == true) {
         START_SCENE()
     }
 })
-let panda_cutscene: Sprite = null
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite, location) {
+    tiles.placeOnRandomTile(PANDA, assets.tile`myTile12`)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
+    tiles.placeOnRandomTile(PANDA, assets.tile`myTile13`)
+})
 let orane: Sprite = null
 let purp: Sprite = null
 let pink: Sprite = null
@@ -61,6 +81,9 @@ let emailyellow: Sprite = null
 let emailpaypal: Sprite = null
 let EMAILSPAM: Sprite = null
 let PANDA: Sprite = null
+let panda_cutscene: Sprite = null
+let bamboo: Sprite = null
 let start_A = false
+info.setScore(0)
 start_A = true
 tiles.setTilemap(tilemap`level5`)
